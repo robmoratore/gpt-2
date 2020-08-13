@@ -3,4 +3,5 @@ __pycache__
 models/
 checkpoint
 samples
+data
 .DS_Store
