@@ -1,17 +1,20 @@
-
-Reference:  ["Beginner’s Guide to Retrain GPT-2 (117M) to Generate Custom Text Content"](https://medium.com/@ngwaifoong92/beginners-guide-to-retrain-gpt-2-117m-to-generate-custom-text-content-8bb5363d8b7f)
+**Status:** Archive (code is provided as-is, no updates expected)
 
 # gpt-2
 
-Code from the paper ["Language Models are Unsupervised Multitask Learners"](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf).
+Code and models from the paper ["Language Models are Unsupervised Multitask Learners"](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf).
 
-We have currently released small (117M parameter) and medium (345M parameter) versions of GPT-2.  While we have not released the larger models, we have [released a dataset](https://github.com/openai/gpt-2-output-dataset) for researchers to study their behaviors.
+You can read about GPT-2 and its staged release in our [original blog post](https://blog.openai.com/better-language-models/), [6 month follow-up post](https://openai.com/blog/gpt-2-6-month-follow-up/), and [final post](https://www.openai.com/blog/gpt-2-1-5b-release/).
 
-See more details in our [blog post](https://blog.openai.com/better-language-models/).
+We have also [released a dataset](https://github.com/openai/gpt-2-output-dataset) for researchers to study their behaviors.
+
+<sup>*</sup> *Note that our original parameter counts were wrong due to an error (in our previous blog posts and paper).  Thus you may have seen small referred to as 117M and medium referred to as 345M.*
 
 ## Usage
 
 This repository is meant to be a starting point for researchers and engineers to experiment with GPT-2.
+
+For basic information, see our [model card](./model_card.md).
 
 ### Some caveats
 
