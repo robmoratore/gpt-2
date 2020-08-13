@@ -1,7 +1,8 @@
 __pycache__
 .mypy_cache/
 models/
-checkpoint
-samples
-data
+checkpoint/
+samples/
+data/
 .DS_Store
+.ipynb_checkpoints/
