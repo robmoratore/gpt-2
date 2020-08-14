@@ -2,9 +2,11 @@
 # Usage:
 #  PYTHONPATH=src ./train --dataset <file|directory|glob>
 
+import sys, os
+sys.path.extend([f'./{name}' for name in os.listdir(".") if os.path.isdir(name)])
+
 import argparse
 import json
-import os
 import numpy as np
 import tensorflow as tf
 import time
@@ -12,9 +14,9 @@ import tqdm
 from tensorflow.core.protobuf import rewriter_config_pb2
 
 import model, sample, encoder
-from load_dataset import load_dataset, Sampler
-from accumulate import AccumulatingOptimizer
-import memory_saving_gradients
+from src.load_dataset import load_dataset, Sampler
+from src.accumulate import AccumulatingOptimizer
+import src.memory_saving_gradients
 
 CHECKPOINT_DIR = 'checkpoint'
 SAMPLE_DIR = 'samples'
@@ -25,7 +27,8 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 parser.add_argument('--dataset', metavar='PATH', type=str, required=True, help='Input file, directory, or glob pattern (utf-8 text, or preencoded .npz files).')
-parser.add_argument('--model_name', metavar='MODEL', type=str, default='117M', help='Pretrained model name')
+parser.add_argument('--models_dir', metavar='MODELDIR', type=str, default='models', help='Pretrained model directory')
+parser.add_argument('--model_name', metavar='MODEL', type=str, default='124M', help='Pretrained model name')
 parser.add_argument('--combine', metavar='CHARS', type=int, default=50000, help='Concatenate input files with <|endoftext|> separator into chunks of this minimum size')
 parser.add_argument('--encoding', type=str, default='utf-8', help='Set the encoding for reading and writing files.')
 
@@ -71,7 +74,7 @@ def randomize(context, hparams, p):
 
 def main():
     args = parser.parse_args()
-    enc = encoder.get_encoder(args.model_name)
+    enc = encoder.get_encoder(args.model_name, args.models_dir)
     hparams = model.default_hparams()
     with open(os.path.join('models', args.model_name, 'hparams.json')) as f:
         hparams.override_from_dict(json.load(f))

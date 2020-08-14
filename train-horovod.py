@@ -2,9 +2,11 @@
 # Usage:
 #  PYTHONPATH=src ./train --dataset <file|directory|glob>
 
+import sys, os
+sys.path.extend([f'./{name}' for name in os.listdir(".") if os.path.isdir(name)])
+
 import fire
 import json
-import os
 import numpy as np
 import tensorflow as tf
 import random
