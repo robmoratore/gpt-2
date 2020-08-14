@@ -8,7 +8,7 @@ COPY requirements.txt requirements.txt
 
 # update and upgrade packages and pip and install python libraries
 RUN apt-get update && apt-get upgrade -y \
-&& apt-get install -y apt-utils \
+&& apt-get install -y apt-utils wget \
 && pip3 install --upgrade pip \
 && pip3 install -r requirements.txt \
 && rm requirements.txt
