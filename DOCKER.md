@@ -9,7 +9,7 @@ Then, follow instructions for the Docker installation.
 
 ## Docker Image
 
-Build the Dockerfile and tag the created image as `gpt-2`:
+Build the Dockerfile and tag the created image as `gpt2`:
 ```
 docker build -t gtp2 .
 ```
@@ -26,21 +26,21 @@ You also have the choice of running everything from the terminal or from a Jupyt
 
 #### Jupyter
 ```
-docker run -it -v "$PWD":/tf/notebooks gpt-2
+docker run -it -v "$PWD":/tf/notebooks gpt2
 ```
 
 #### Interactive bash session
 ```
-docker run -it -v "$PWD":/tf/notebooks gpt-2 bash
+docker run -it -v "$PWD":/tf/notebooks gpt2 bash
 ```
 ### Permanent Container
 
 For a permanent container it makes sense to manage it by giving it a specific name and also specifying the port you use to connect to Jupyter in the browser. This way you avoid port conflicts between docker containers and you can easily remember what they do by their name.
 
-Here we are creating a container called `gpt-2` (I know, very imaginative), with the external port 20000 (this can be an arbitrary number as long as it is an available port)
+Here we are creating a container called `gpt2` (I know, very imaginative), with the external port 20000 (this can be an arbitrary number as long as it is an available port)
 
 ```
-docker run --name gpt2 -p 20000:8888 -v "$PWD":/tf/notebooks gpt-2
+docker run --name gpt2 -p 20000:8888 -v "$PWD":/tf/notebooks gpt2
 ```
 
 When you first run the container, you will be put into a bash session within the container which will contain the information on how to  connect to Jupyter in your browser.
