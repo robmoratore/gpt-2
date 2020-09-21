@@ -11,7 +11,7 @@ Then, follow instructions for the Docker installation.
 
 Build the Dockerfile and tag the created image as `gpt2`:
 ```
-docker build -t gtp2 .
+docker build -t gpt2 .
 ```
 
 ## Docker Container
