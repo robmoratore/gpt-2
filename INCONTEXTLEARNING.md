@@ -7,7 +7,7 @@ This is the end point of the instructions found in [DOCKER.md](./DOCKER.md).
 
 ## Let's make a haiku bot
 
-### A word on training data
+### Setting up the training dataset
 
 In haikus, the structure and style are an important component to the end result. Therefore the training data has to be structured in a way where there is a delimitation between each haiku.
 
@@ -15,20 +15,32 @@ We do this by putting `<|endoftext|>` in between each haiku in our training text
 
 The example file included in `/data` has already been formatted to include the delimiters.
 
-### Next we encode the training data into a format which the model can use
+#### Data encoding
+
+For the model to be able to use the data, it first needs to be encoded. This only needs to be done once for any dataset you use for training.
+
+We can do that with the following command:
 
 ```
 python3 encode.py data/haiku.txt data/haiku.npz
 ```
 
-### Finally we can start training
+### Model training
 
+We are now ready to train the model. The questions is, which model will we train?
+
+By default, the `124M` model will be used as the basis, however you can specify a different model with the `--model_name model` parameter.
+Bigger models will be a lot more resource intensive to train, so we suggest you first try with the smallest model. In general that model already produces quite good results.
+
+
+We can start training with:
 ```
-python3 train.py --dataset data/haiku.npz --model_name haiku
+python3 train.py --dataset data/haiku.npz --run_name haiku
 ```
 
-To differentiate between model runs we train we add `--model_name name` to the command.
-There are many other parameters which can be changed and tuned while training the model. You can find out more within
+To differentiate between model runs we train we add `--run_name name` to the command.
+
+There are many other parameters which can be changed and tuned while training the model. You can find out more with:
 
 ```
 python3 train.py --help
@@ -37,33 +49,48 @@ python3 train.py --help
 For example, if you would like to see more samples, you can modify it accordingly (default is once every 100 steps). For example, to output 3 samples every 50 steps, type the following command instead:
 
 ```
-python train.py --dataset data/haiku.npz --model_name haiku --sample_every 50 --sample_num 3
+python train.py --dataset data/haiku.npz --run_name haiku --sample_every 50 --sample_num 3
 ```
 
 You can stop the training at any time by using `CTRL+C`
+
 The model will automatically save every 1000 steps, and at the last step before training stops.
 
-### Using our model to generate Text
+### Using our model to generate text
 
-Create a folder for the model
+To use our trained model, we have to move it to the `src/models` directory alongside the default GPT-2 models.
 
-In the src/models folder, you should have just one folder called 117M. Create another folder to store your model alongside with the original model. I made a new folder called lyric. Now, I have two folders in src/models, one is called 117M and the other is called lyric.
+Navigate to `src/models` directory and create a new directory with the model name of your choosing. In our case we will call is `haiku`
 
-Go to src/checkpoint/run1 folder, and copy the following files:
+Next we have to copy our trained model to that new directory we created.
+For that, go to the `src/checkpoint/haiku` directory, and copy the following files:
 
+```
 checkpoint
 model-xxx.data-00000-of-00001
 model-xxx.index
 model-xxx.meta
+```
 
-xxx refers to the step number. Since I have trained for 501 steps, I have model-501.index.
+xxx refers to the step number, and it will depend on the number of step you trained your model. If you trained for 500 steps, you will have model-500.index.
 
-Paste them into the newly created folder (in my case, the folder is called lyric). Next, go to the 124M folder and copy the following files:
+Paste them into the newly created directory `src/models/haiku`.
 
+Next, we need some base files from the existing models. Go to the `src/models/124M` directory and copy the following files:
+
+```
 encoder.json
 hparams.json
 vocab.bpe
+```
 
-Paste them into the lyric folder. Double check that you should have 7 files in it.
+Paste them into `src/models/haiku`. If it all went well, you should have 7 files in it.
 
-With this, we are ready to generate samples. There are two ways to generate samples.
+With this, we are ready to generate samples with our new model!
+
+To do this you can follow the instructions in [SAMPLEGENERATION.md](./SAMPLEGENERATION.md) with one small change.
+To use our new model for sample generation, you have to add the following parameter
+
+```
+--model_name haiku
+```
