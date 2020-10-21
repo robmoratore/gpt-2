@@ -3,6 +3,6 @@ __pycache__
 models/
 checkpoint/
 samples/
-data/
 .DS_Store
 .ipynb_checkpoints/
+data/*.npz
