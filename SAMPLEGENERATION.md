@@ -16,6 +16,18 @@ python3 download_model.py 774M
 python3 download_model.py 1558M
 ```
 
+## Conditional sample generation
+
+To give the model custom prompts, you can use:
+```
+python3 src/interactive_conditional_samples.py
+```
+
+There are various flags for controlling the samples, which can be found with the help command:
+```
+python3 src/interactive_conditional_samples.py -- --help
+```
+
 ## Unconditional sample generation
 
 To generate unconditional samples from the small model:
@@ -26,16 +38,4 @@ python3 src/generate_unconditional_samples.py
 There are various flags for controlling the samples, which can be found with the help command:
 ```
 python3 src/generate_unconditional_samples.py -- --help
-```
-
-## Conditional sample generation
-
-To give the model custom prompts, you can use:
-```
-python3 src/interactive_conditional_samples.py
-```
-
-To check flag descriptions, use:
-```
-python3 src/interactive_conditional_samples.py -- --help
 ```
