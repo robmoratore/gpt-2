@@ -9,6 +9,7 @@ This is the end point of the instructions found in [DOCKER.md](./DOCKER.md).
 
 First we need to download the models before being able to use them.
 By default all the codes below will use the `124M` model, unless otherwise specified. The larger models might not run locally in your machine.
+
 ```
 python3 download_model.py 124M
 python3 download_model.py 355M
@@ -39,3 +40,7 @@ There are various flags for controlling the samples, which can be found with the
 ```
 python3 src/generate_unconditional_samples.py -- --help
 ```
+
+
+
+You can go back to the intro ReadMe [here](./README.md)
