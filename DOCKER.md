@@ -28,7 +28,13 @@ We will run interactive ephemeral docker containers which "self-destruct" upon s
 To run the container and enter an interactive bash session, run the following command:
 
 ```
-docker run -it -v "$PWD":/tf/notebooks gpt2 bash
+docker run -it -v "$PWD":/repo gpt2 bash
+```
+
+Now we are inside the container. The last step is to go into the `/repo` directory to access the shared volume in the local machine:
+
+```
+cd /repo
 ```
 
 This point is the starting point for [sample generation](./SAMPLEGENERATION.md) and [in context learning](./INCONTEXTLEARNING.md)
