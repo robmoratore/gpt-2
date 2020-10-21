@@ -1,109 +1,40 @@
-**Status:** Archive (code is provided as-is, no updates expected)
+# Intro
 
-# gpt-2
+This repository was created as a combination of the great original work by [OpenAI](https://github.com/openai/gpt-2) and the follow up work by [N. Shepperd](https://github.com/nshepperd/gpt-2).
+**N. Sheppard** added the code needed to do *In context learning* to adapt the general GPT-2 models for specific use cases. However his code was based off an older version of GPT-2 and therefore had to be very slightly updated. Moreover, the **OpenAI** GPT-2 repo has been archived as of December 2019, but since then their `Dockerfile` has stopped working. This has also been addressed in this repository.
 
-Code and models from the paper ["Language Models are Unsupervised Multitask Learners"](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf).
+For more information on GPT-2, please consult the original repositories and the paper ["Language Models are Unsupervised Multitask Learners"](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf).
 
-You can read about GPT-2 and its staged release in our [original blog post](https://blog.openai.com/better-language-models/), [6 month follow-up post](https://openai.com/blog/gpt-2-6-month-follow-up/), and [final post](https://www.openai.com/blog/gpt-2-1-5b-release/).
+Finally, the original contributors can be found here [CONTRIBUTORS.md](./CONTRIBUTORS.md).
 
-We have also [released a dataset](https://github.com/openai/gpt-2-output-dataset) for researchers to study their behaviors.
+# Usage
 
-<sup>*</sup> *Note that our original parameter counts were wrong due to an error (in our previous blog posts and paper).  Thus you may have seen small referred to as 117M and medium referred to as 345M.*
-
-## Usage
-
-This repository is meant to be a starting point for researchers and engineers to experiment with GPT-2.
-
-For basic information, see our [model card](./model_card.md).
-
-### Some caveats
-
-- GPT-2 models' robustness and worst case behaviors are not well-understood.  As with any machine-learned model, carefully evaluate GPT-2 for your use case, especially if used without fine-tuning or in safety-critical applications where reliability is important.
-- The dataset our GPT-2 models were trained on contains many texts with [biases](https://twitter.com/TomerUllman/status/1101485289720242177) and factual inaccuracies, and thus GPT-2 models are likely to be biased and inaccurate as well.
-- To avoid having samples mistaken as human-written, we recommend clearly labeling samples as synthetic before wide dissemination.  Our models are often incoherent or inaccurate in subtle ways, which takes more than a quick read for a human to notice.
-
-### Work with us
-
-Please [let us know](mailto:languagequestions@openai.com) if you’re doing interesting research with or working on applications of GPT-2!  We’re especially interested in hearing from and potentially working with those who are studying
-- Potential malicious use cases and defenses against them (e.g. the detectability of synthetic text)
-- The extent of problematic content (e.g. bias) being baked into the models and effective mitigations
-
-## Development
-
-See [DEVELOPERS.md](./DEVELOPERS.md)
-
-## Contributors
-
-See [CONTRIBUTORS.md](./CONTRIBUTORS.md)
-
-## Fine tuning on custom datasets
-
-To retrain GPT-2 117M model on a custom text dataset:
+All the following instructions assume you have cloned this repository and have opened its directory in the command prompt.
+This can be done with the following command provided you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed in your system.
 
 ```
-PYTHONPATH=src ./train.py --dataset <file|directory|glob>
+git clone https://github.com/robmoratore/gpt-2.git && cd gpt-2
 ```
 
-If you want to precompute the dataset's encoding for multiple runs, you can instead use:
+## Docker
 
-```
-PYTHONPATH=src ./encode.py <file|directory|glob> /path/to/encoded.npz
-PYTHONPATH=src ./train.py --dataset /path/to/encoded.npz
-```
+A `Dockerfile` is provided to build a cpu container. More information and usage instructions can be found here [DOCKER.md](./DOCKER.md).
 
-Make sure `cudnn` is installed. [Some have reported](https://github.com/nshepperd/gpt-2/issues/8) that `train.py` runs without it but has worse memory usage and might OOM.
+If you do not wish to user Docker, then the original GPT-2 repo has instructions on how to do a native installation. This is not recommended as it is reliant on outdated versions of python packages. If however you still wish to do so, please refer to the original documentation [here](https://github.com/openai/gpt-2/blob/master/DEVELOPERS.md).
 
-### Gradient Checkpointing
+## Sample generation
 
-https://github.com/openai/gradient-checkpointing is included to reduce the memory requirements of the model, and can be enabled by `--memory_saving_gradients`. The checkpoints are currently chosen manually (poorly) by just adding layer 10 to the 'checkpoints' collection in model.py. `--memory_saving_gradients` is enabled by default for training the 345M model.
+Samples can be generated either conditionally or unconditionally. Conditional sample generation is an interactive mode where users are prompted for a initial text input which the model uses to generate the remaining text. With unconditional sample generation, the model outputs text without any prompting.
 
-### Validation loss
+OpenAI has provided GPT-2 models of four different sizes (number of parameters) and any of those can be used for sample generation. The largest size model might not run locally depending on you machine though. Furthermore, you can also use the same code to generate samples with any custom models you create with **In context learning**.
 
-Set `--val_every` to a number of steps `N > 0`, and "validation" loss against a fixed sample of the dataset will be calculated every N steps to get a better sense of training progress. N around 200 suggested. You can set `--val_dataset` to choose a separate validation dataset, otherwise it defaults to a sample from the train dataset (so not a real cross-validation loss!).
+Detailed instructions on sample generation can be found here [SAMPLEGENERATION.md](./SAMPLEGENERATION.md).
 
-### Optimizer
+## In context learning
 
-You can use SGD instead of Adam with `--optimizer sgd`. This also helps conserve memory when training the 345M model. Note: the learning rate needs to be adjusted for SGD, due to not having Adam's gradient normalization (0.0006 seems to be a good number from some experiments).
+You can improve model results for a specific task with in context learning and a training dataset for that specific task.
 
-### Multi gpu (out of date)
-
-To do distributed on multiple GPUs or machines using Horovod:
-
-```
-mpirun -np 4 \
-    -H localhost:4 \
-    -bind-to none -map-by slot \
-    -x NCCL_DEBUG=INFO -x LD_LIBRARY_PATH -x PATH \
-    -x PYTHONPATH=src \
-    -mca pml ob1 -mca btl ^openib \
-    /home/jovyan/gpt-2/train-horovod.py --dataset encoded.npz
-```
-
-## GPT-2 samples
-
-| WARNING: Samples are unfiltered and may contain offensive content. |
-| --- |
-
-While we have not yet released GPT-2 itself, you can see some samples from it in the `gpt-2-samples` folder.
-We show unconditional samples with default settings (temperature 1 and no truncation), with temperature 0.7, and with truncation with top_k 40.
-We show conditional samples, with contexts drawn from `WebText`'s test set, with default settings (temperature 1 and no truncation), with temperature 0.7, and with truncation with top_k 40.
-
-## Citation
-
-Please use the following bibtex entry:
-```
-@article{radford2019language,
-  title={Language Models are Unsupervised Multitask Learners},
-  author={Radford, Alec and Wu, Jeff and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya},
-  year={2019}
-}
-```
-
-## Future work
-
-We may release code for evaluating the models on various benchmarks.
-
-We are still considering release of the larger models.
+Detailed instructions on in context learning can be found here [INCONTEXTLEARNING.md](./INCONTEXTLEARNING.md).
 
 ## License
 

@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.15.2-py3-jupyter
+FROM tensorflow/tensorflow:1.15.2-py3
 
 # setup environment language
 ENV LANG=C.UTF-8
