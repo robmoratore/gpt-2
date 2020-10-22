@@ -49,7 +49,7 @@ python3 train.py --help
 For example, if you would like to see more samples, you can modify it accordingly (default is once every 100 steps). For example, to output 3 samples every 50 steps, type the following command instead:
 
 ```
-python train.py --dataset data/haiku.npz --run_name haiku --sample_every 50 --sample_num 3
+python3 train.py --dataset data/haiku.npz --run_name haiku --sample_every 50 --sample_num 3
 ```
 
 You can stop the training at any time by using `CTRL+C`
