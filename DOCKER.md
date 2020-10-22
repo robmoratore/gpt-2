@@ -34,7 +34,7 @@ docker run -it --rm -v "$PWD":/repo gpt2 bash
 Now we are inside the container. The last step is to go into the `/repo` directory to access the shared volume in the local machine:
 
 ```
-cd /repo
+cd repo
 ```
 
 This point is the starting point for [sample generation](./SAMPLEGENERATION.md) and [in context learning](./INCONTEXTLEARNING.md)
