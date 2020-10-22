@@ -58,12 +58,12 @@ The model will automatically save every 1000 steps, and at the last step before 
 
 ### Using our model to generate text
 
-To use our trained model, we have to move it to the `src/models` directory alongside the default GPT-2 models.
+To use our trained model, we have to move it to the `models` directory alongside the default GPT-2 models.
 
-Navigate to `src/models` directory and create a new directory with the model name of your choosing. In our case we will call is `haiku`
+Navigate to `models` directory and create a new directory with the model name of your choosing. In our case we will call is `haiku`
 
 Next we have to copy our trained model to that new directory we created.
-For that, go to the `src/checkpoint/haiku` directory, and copy the following files:
+For that, go to the `checkpoint/haiku` directory, and copy the following files:
 
 ```
 checkpoint
@@ -74,9 +74,9 @@ model-xxx.meta
 
 xxx refers to the step number, and it will depend on the number of step you trained your model. If you trained for 500 steps, you will have model-500.index.
 
-Paste them into the newly created directory `src/models/haiku`.
+Paste them into the newly created directory `models/haiku`.
 
-Next, we need some base files from the existing models. Go to the `src/models/124M` directory and copy the following files:
+Next, we need some base files from the existing models. Go to the `models/124M` directory and copy the following files:
 
 ```
 encoder.json
@@ -84,7 +84,7 @@ hparams.json
 vocab.bpe
 ```
 
-Paste them into `src/models/haiku`. If it all went well, you should have 7 files in it.
+Paste them into `models/haiku`. If it all went well, you should have 7 files in it.
 
 With this, we are ready to generate samples with our new model!
 
